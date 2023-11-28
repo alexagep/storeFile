@@ -1,7 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import { DataSourceOptions } from 'typeorm';
-import { Users } from '../users/users.entity';
-import { Products } from '../products/products.entity';
+import { UploadInfos } from '../uploadInfos/uploadInfos.entity';
 // import { join } from 'node:path';
 const CONNECTION_TYPE = 'postgres';
 
@@ -18,8 +17,6 @@ export default registerAs(
     database: process.env.DB_NAME,
     synchronize: false,
     logging: false,
-    entities: [Users, Products],
-    // entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-    migrations: [__dirname + '/../../db/migration/*.{.ts,.js}'],
+    entities: [UploadInfos],
   }),
 );
