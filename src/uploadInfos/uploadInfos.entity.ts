@@ -17,7 +17,7 @@ export class UploadInfos {
   @Column({ nullable: false })
   location: string;
 
-  @Column({ nullable: false  })
+  @Column({ nullable: true  })
   path: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

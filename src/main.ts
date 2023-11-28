@@ -6,7 +6,7 @@ import { ErrorFilter } from './common/error.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalFilters(new ErrorFilter());
+  // app.useGlobalFilters(new ErrorFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({

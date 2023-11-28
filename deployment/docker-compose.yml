@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  postgresql:
+    image: postgres
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d/:Z,ro
+    restart: always
+    env_file:
+      - ./postgres.env
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ]
+      timeout: 10s
+      retries: 10
+    ports:
+      - "5432:5432"

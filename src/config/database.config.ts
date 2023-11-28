@@ -1,11 +1,8 @@
 import { registerAs } from '@nestjs/config';
 import { DataSourceOptions } from 'typeorm';
 import { UploadInfos } from '../uploadInfos/uploadInfos.entity';
-// import { join } from 'node:path';
 const CONNECTION_TYPE = 'postgres';
 
-/* The registerAs function is used to register this configuration file behind a specified token,
-which can then be used to load the configuration options in the TypeORM module using ConfigService. */
 export default registerAs(
   'typeorm',
   (): DataSourceOptions => ({
