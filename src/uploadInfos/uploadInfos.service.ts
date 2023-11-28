@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { DownloadDataDto, UploadDataDto } from './DTO/data.dto';
-import { Response } from './data.interface';
+import { DownloadDataDto, UploadDataDto } from './DTO/uploadInfos.dto';
+import { Response } from './uploadInfos.interface';
 
 @Injectable()
-export class DataService {
+export class UploadInfoService {
   async upload(body: UploadDataDto): Promise<Response> {
     console.log(body);
 

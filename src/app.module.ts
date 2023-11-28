@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DataModule } from './data/data.module';
+import { UploadInfoModule } from './uploadInfos/uploadInfos.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseConfig from './config/database.config';
@@ -17,7 +17,7 @@ import databaseConfig from './config/database.config';
 
       inject: [ConfigService],
     }),
-    DataModule,
+    UploadInfoModule,
   ],
 })
 export class AppModule {}

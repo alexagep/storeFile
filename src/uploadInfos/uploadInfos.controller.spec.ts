@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DataController } from './data.controller';
+import { DataController } from './uploadInfos.controller';
 
 describe('DataController', () => {
   let controller: DataController;
