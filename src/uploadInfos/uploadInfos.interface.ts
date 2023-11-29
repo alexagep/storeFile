@@ -1,3 +1,5 @@
+import { UploadInfos } from "./uploadInfos.entity";
+
 export interface Response {
-  message: string;
+  message: UploadInfos[] | string;
 }

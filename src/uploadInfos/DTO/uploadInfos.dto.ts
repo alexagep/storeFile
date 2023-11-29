@@ -1,7 +1,18 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsString, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+
+export class DownloadDataDto {
+  @IsString({ message: 'name must be a string' })
+  @IsOptional()
+  name: string;
+
+  @IsString({ message: 'tag must be a string' })
+  @IsOptional()
+  tag: string;
+}
 
 class MetaDataDto {
-  @IsString({ message: 'name must be a string' })
+  @IsString()
   @IsNotEmpty({ message: 'name is required' })
   name: string;
 
@@ -15,20 +26,11 @@ class MetaDataDto {
 }
 
 export class UploadDataDto {
-  @IsNotEmpty({ message: 'metadata is required' })
+  @ValidateNested()
+  @Type(() => MetaDataDto)
   metadata: MetaDataDto;
 
   @IsString({ message: 'data must be a string' })
   @IsNotEmpty({ message: 'data is required' })
   data: string;
-}
-
-export class DownloadDataDto {
-  @IsString({ message: 'name must be a string' })
-  @IsOptional()
-  name: string;
-
-  @IsString({ message: 'tag must be a string' })
-  @IsOptional()
-  tag: string;
 }

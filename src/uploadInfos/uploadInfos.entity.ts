@@ -26,7 +26,4 @@ export class UploadInfos {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date | string;
-
-  @Column({ type: 'timestamp', nullable: true })
-  updatedAt: Date | string;
 }

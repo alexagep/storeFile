@@ -14,3 +14,18 @@ services:
       retries: 10
     ports:
       - "5432:5432"
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_storage:/data
+    environment:
+      MINIO_ROOT_USER: aliAghapour
+      MINIO_ROOT_PASSWORD: al!@Aghap0ur
+    command: server --console-address ":9001" /data
+
+volumes:
+  minio_storage: {}

@@ -13,9 +13,7 @@ export class UploadInfos1701191511831 implements MigrationInterface {
             "location" varchar(255) NOT NULL,
             "path" varchar(255),
             "isDownloaded" boolean default false,
-            "createdAt"     timestamp not null default CURRENT_TIMESTAMP,
-            "updatedAt"     timestamp,
-            CONSTRAINT "UQ_name_tag" UNIQUE ("name", "tag")
+            "createdAt"     timestamp not null default CURRENT_TIMESTAMP
         );`);
   }
 
