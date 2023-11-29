@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 @Entity('UploadInfos')
+@Index(['name', 'tag'])
 export class UploadInfos {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -17,8 +18,11 @@ export class UploadInfos {
   @Column({ nullable: false })
   location: string;
 
-  @Column({ nullable: true  })
+  @Column({ nullable: true })
   path: string;
+
+  @Column({ type: 'boolean', default: false })
+  isDownloaded: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date | string;
