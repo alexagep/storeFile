@@ -59,6 +59,15 @@ export class UploadInfoService {
     for (const uploadInfo of uploadInfos) {
       const fileData = await this.readFile(uploadInfo.location);
       if (fileData) {
+        const obj = {
+          metadata: {
+            tag: uploadInfo.tag,
+            name: uploadInfo.name,
+            type: uploadInfo.type,
+          },
+          data,
+        };
+
         data.push(fileData);
 
         // Update isDownloaded field after download
