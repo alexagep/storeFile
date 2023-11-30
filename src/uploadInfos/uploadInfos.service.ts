@@ -7,12 +7,14 @@ import { QueryRunner, Repository } from 'typeorm';
 import * as fs from 'fs';
 import { randomUUID } from 'crypto';
 import { join } from 'path';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UploadInfoService {
   constructor(
     @InjectRepository(UploadInfos)
     private readonly uploadInfoRepository: Repository<UploadInfos>,
+    private readonly configService: ConfigService,
   ) {}
 
   async download(body: DownloadDataDto): Promise<Response> {
@@ -71,7 +73,7 @@ export class UploadInfoService {
 
   async saveFile(data: string, filename: string): Promise<string> {
     const newName = `maani-file-${randomUUID()}-${filename}.txt`;
-    const saveTo = join(process.cwd(), 'uploads', newName);
+    const saveTo = join(process.cwd(), `${this.configService.get<string>('STORE_LOCATION')}`, newName);
     await fs.promises.writeFile(saveTo, data);
     return saveTo;
   }

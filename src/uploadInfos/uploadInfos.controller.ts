@@ -15,7 +15,7 @@ export class UploadInfoController {
 
   @ApiCreatedResponse({ type: UploadDataDto, description: 'Upload A Data' })
   @Post('upload')
-  async create(@Body() body: UploadDataDto): Promise<Response> {
+  async upload(@Body() body: UploadDataDto): Promise<Response> {
     const result = await this.uploadInfoService.upload(body);
     return result;
   }
@@ -23,7 +23,7 @@ export class UploadInfoController {
   @ApiCreatedResponse({ type: DownloadDataDto, description: 'Download Data' })
   @ApiNotFoundResponse()
   @Post('download')
-  async resend(@Body() body: DownloadDataDto): Promise<Response> {
+  async download(@Body() body: DownloadDataDto): Promise<Response> {
     const result = await this.uploadInfoService.download(body);
     return result;
   }

@@ -30,8 +30,8 @@ async function bootstrap() {
 
   // app.useGlobalFilters(new QueryFailedExceptionFilter());
 
-  if (!fs.existsSync(`${process.cwd()}/uploads`)) {
-    fs.mkdirSync(`${process.cwd()}/uploads`);
+  if (!fs.existsSync(`${process.cwd()}/${configService.get<string>('STORE_LOCATION')}`)) {
+    fs.mkdirSync(`${process.cwd()}/${configService.get<string>('STORE_LOCATION')}`);
   }
 
   const document = SwaggerModule.createDocument(app, config);
