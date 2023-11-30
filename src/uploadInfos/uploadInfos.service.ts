@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { DownloadDataDto, UploadDataDto } from './DTO/uploadInfos.dto';
 import { Response } from './uploadInfos.interface';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,6 +8,7 @@ import * as fs from 'fs';
 import { randomUUID } from 'crypto';
 import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
+import { IStorageProviderFactory } from 'src/common/providers-factory/storage-provider.interface';
 
 @Injectable()
 export class UploadInfoService {
@@ -15,6 +16,8 @@ export class UploadInfoService {
     @InjectRepository(UploadInfos)
     private readonly uploadInfoRepository: Repository<UploadInfos>,
     private readonly configService: ConfigService,
+    @Inject('STORAGE_PROVIDER_FACTORY')
+    private readonly storageProviderFactory: IStorageProviderFactory,
   ) {}
 
   async download(body: DownloadDataDto): Promise<Response> {

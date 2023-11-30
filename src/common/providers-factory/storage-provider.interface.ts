@@ -1,5 +1,5 @@
 export interface IStorageProviderFactory {
-  createStorageProvider(): StorageProvider;
+  createStorageProvider(): IStorageProvider;
 }
 
 export interface IStorageProvider {
