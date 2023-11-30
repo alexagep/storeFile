@@ -1,37 +1,18 @@
-abstract class StorageProvider {
-  public abstract saveFile(): StorageProvider;
+import { UploadInfos } from "src/uploadInfos/uploadInfos.entity";
 
-//   public abstract Create(name: string, data: string): boolean;
-  public abstract deleteFile(name: string): boolean;
-//   public abstract Get(name: string): string;
+// export interface IStorageProviderFactory {
+//   createStorageProvider(): IStorageProvider;
+// }
+
+export abstract class IStorageProvider {
+  public abstract saveFile(data: string, filename?: string): Promise<string>;
+  public abstract deleteFile(location: string): Promise<void>;
+  public abstract readFile(location: string): Promise<string> 
 }
-class LocalStorage extends StorageProvider {
-  public saveFile(): StorageProvider {
-    return new LocalStorage();
-  }
 
-//   public Create(name: string, data: string): boolean {
-//     return true;
-//   }
-  public deleteFile(name: string): boolean {
-    return true;
-  }
-//   public Get(name: string): string {
-//     return '';
-//   }
-}
-// class S3Storage extends StorageProvider {
-//   public Storage(): StorageProvider {
-//     return new LocalStorage();
-//   }
 
-//   public Create(name: string, data: string): boolean {
-//     return true;
-//   }
-//   public Delete(name: string): boolean {
-//     return true;
-//   }
-//   public Get(name: string): string {
-//     return '';
-//   }
+// abstract class StorageProvider {
+//   public abstract saveFile(): Promise<string>;
+//   public abstract deleteFile(name: string): boolean;
+// //   public abstract Get(name: string): string;
 // }

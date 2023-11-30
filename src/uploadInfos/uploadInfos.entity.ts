@@ -18,9 +18,6 @@ export class UploadInfos {
   @Column({ nullable: false })
   location: string;
 
-  @Column({ nullable: true })
-  path: string;
-
   @Column({ type: 'boolean', default: false })
   isDownloaded: boolean;
 

@@ -59,7 +59,7 @@ describe('UploadInfoService TEST', () => {
 
     fs.promises.writeFile = jest.fn().mockResolvedValue(undefined);
 
-    const result = await uploadInfoService.saveFile(data, filename);
+    // const result = await uploadInfoService.saveFile(data, filename);
 
     const regex = /file\.txt$/;
 

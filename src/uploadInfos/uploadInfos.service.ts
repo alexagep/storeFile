@@ -5,19 +5,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UploadInfos } from './uploadInfos.entity';
 import { QueryRunner, Repository } from 'typeorm';
 import * as fs from 'fs';
-import { randomUUID } from 'crypto';
-import { join } from 'path';
-import { ConfigService } from '@nestjs/config';
-import { IStorageProviderFactory } from 'src/common/providers-factory/storage-provider.interface';
+// import { randomUUID } from 'crypto';
+// import { join } from 'path';
+// import { ConfigService } from '@nestjs/config';
+// import { IStorageProviderFactory } from 'src/common/providers-factory/storage-provider.interface';
+// import { LocalStorageService } from 'src/common/providers-factory/local-storage-provider.factory';
 
 @Injectable()
 export class UploadInfoService {
   constructor(
     @InjectRepository(UploadInfos)
     private readonly uploadInfoRepository: Repository<UploadInfos>,
-    private readonly configService: ConfigService,
-    @Inject('STORAGE_PROVIDER_FACTORY')
-    private readonly storageProviderFactory: IStorageProviderFactory,
+    // private readonly configService: ConfigService,
+    @Inject('STORAGE_PROVIDER_FACTORY') 
+    private storage: any,
   ) {}
 
   async download(body: DownloadDataDto): Promise<Response> {
@@ -36,7 +37,7 @@ export class UploadInfoService {
       let message = null;
 
       if (data.length > 0) {
-        message = data
+        message = data;
       } else {
         message = 'there is no data with provided info';
       }
@@ -75,14 +76,11 @@ export class UploadInfoService {
   }
 
   async saveFile(data: string, filename: string): Promise<string> {
-    const newName = `maani-file-${randomUUID()}-${filename}.txt`;
-    const saveTo = join(process.cwd(), `${this.configService.get<string>('STORE_LOCATION')}`, newName);
-    await fs.promises.writeFile(saveTo, data);
-    return saveTo;
+    return this.storage.saveFile(data, filename);
   }
 
   async deleteFile(path: string): Promise<void> {
-    await fs.promises.unlink(path);
+    await this.storage.deleteFile(path);
   }
 
   async saveUploadInfo(metadata: any, location: string): Promise<UploadInfos> {
@@ -130,8 +128,8 @@ export class UploadInfoService {
     };
   }
 
-  async readFile(path: string): Promise<string> {
-    return await fs.promises.readFile(path, 'utf8');
+  async readFile(location: string): Promise<string> {
+    return await this.storage.readFile(location);
   }
 
   async getUploadInfo(body: DownloadDataDto): Promise<UploadInfos[]> {

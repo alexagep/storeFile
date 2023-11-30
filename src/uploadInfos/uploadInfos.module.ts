@@ -4,40 +4,27 @@ import { UploadInfoService } from './uploadInfos.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UploadInfos } from './uploadInfos.entity';
 import { ConfigService } from '@nestjs/config';
-import { LocalStorageProviderFactory } from 'src/common/providers-factory/local-storage-provider.factory';
-// import { S3StorageProviderFactory } from 'src/common/providers-factory/s3-storage-provider';
-// import { APP_INTERCEPTOR } from '@nestjs/core';
-// import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
-import { config } from 'dotenv';
+import { storageServiceFactory } from 'src/common/providers-factory/storage-service.factory';
+import { MinioModule } from 'nestjs-minio-client';
+import {config} from 'dotenv'
 
 config();
-let storageProviderFactoryClass = null;
-if (process.env.STORAGE_TYPE === 'local') {
-  storageProviderFactoryClass = LocalStorageProviderFactory;
-} 
-// else if (process.env.STORAGE_TYPE === 's3') {
-//   storageProviderFactoryClass = S3StorageProviderFactory;
-// } 
-else {
-  throw new Error('Invalid storage type');
-}
-
-
 @Module({
-  imports: [TypeOrmModule.forFeature([UploadInfos])],
+  imports: [
+    TypeOrmModule.forFeature([UploadInfos]),
+    MinioModule.register({
+      endPoint: process.env.MINIO_ENDPOINT,
+      port: parseInt(process.env.MINIO_PORT),
+      useSSL: false,
+      accessKey: process.env.MINIO_ACCESSKEY,
+      secretKey: process.env.MINIO_SECRETKEY,
+    })
+  ],
   controllers: [UploadInfoController],
   providers: [
     UploadInfoService,
     ConfigService,
-    {
-      provide: 'STORAGE_PROVIDER_FACTORY',
-      useClass: storageProviderFactoryClass
-      // useFactory:
-    }
+    storageServiceFactory,
   ],
 })
 export class UploadInfoModule {}
-// function Config() {
-//   throw new Error('Function not implemented.');
-// }
-
