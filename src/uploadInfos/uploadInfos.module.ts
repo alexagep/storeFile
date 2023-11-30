@@ -8,7 +8,9 @@ import { LocalStorageProviderFactory } from 'src/common/providers-factory/local-
 // import { S3StorageProviderFactory } from 'src/common/providers-factory/s3-storage-provider';
 // import { APP_INTERCEPTOR } from '@nestjs/core';
 // import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
+import { config } from 'dotenv';
 
+config();
 let storageProviderFactoryClass = null;
 if (process.env.STORAGE_TYPE === 'local') {
   storageProviderFactoryClass = LocalStorageProviderFactory;
@@ -30,7 +32,12 @@ else {
     {
       provide: 'STORAGE_PROVIDER_FACTORY',
       useClass: storageProviderFactoryClass
+      // useFactory:
     }
   ],
 })
 export class UploadInfoModule {}
+// function Config() {
+//   throw new Error('Function not implemented.');
+// }
+
