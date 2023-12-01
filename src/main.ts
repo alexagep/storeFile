@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { HttpExceptionFilter } from './common/error.filter';
 import { QueryFailedExceptionFilter } from './common/uniqueError';
 
 import * as fs from 'fs';
@@ -23,12 +22,10 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
-      forbidNonWhitelisted: true, // Only allow properties defined in the DTO
+      forbidNonWhitelisted: true,
       transform: true,
     }),
   );
-
-  // app.useGlobalFilters(new QueryFailedExceptionFilter());
 
   if (!fs.existsSync(`${process.cwd()}/${configService.get<string>('STORE_LOCATION')}`)) {
     fs.mkdirSync(`${process.cwd()}/${configService.get<string>('STORE_LOCATION')}`);

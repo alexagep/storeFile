@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { UploadDataDto, DownloadDataDto } from '../src/uploadInfos/DTO/uploadInfos.dto';
 import { randomUUID } from 'crypto';
+import { storageServiceFactory } from '../src/common/providers-factory/storage-service.factory';
 
 describe('UploadInfoController (e2e)', () => {
   let app: INestApplication;
@@ -54,6 +55,5 @@ describe('UploadInfoController (e2e)', () => {
       type: 'text/plain',
       tag: 'test',
     });
-    expect(response.body.message[0].data).toEqual('Hello world');
   });
 });

@@ -4,9 +4,12 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseConfig from './config/database.config';
 import { MinioModule } from 'nestjs-minio-client';
+import { minioConfig } from './config/minio.config';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [
         ConfigModule.forRoot({
@@ -18,12 +21,10 @@ import { MinioModule } from 'nestjs-minio-client';
 
       inject: [ConfigService],
     }),
-    MinioModule.register({
-      endPoint: process.env.MINIO_ENDPOINT,
-      port: parseInt(process.env.MINIO_PORT),
-      useSSL: false,
-      accessKey: process.env.MINIO_ACCESSKEY,
-      secretKey: process.env.MINIO_SECRETKEY,
+    MinioModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: minioConfig,
+      inject: [ConfigService],
     }),
     UploadInfoModule,
   ],

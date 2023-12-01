@@ -4,7 +4,6 @@ import {
   ArgumentsHost,
   HttpException,
 } from '@nestjs/common';
-// import { QueryFailedError } from 'typeorm';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -14,7 +13,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest();
     const status = exception.getStatus();
 
-    console.log(status, '++++++++++++++++++++++++++++++++====')
     const errorResponse = {
       code: status,
       timestamp: new Date().toISOString(),

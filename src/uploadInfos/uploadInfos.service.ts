@@ -4,21 +4,21 @@ import { Response } from './uploadInfos.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UploadInfos } from './uploadInfos.entity';
 import { QueryRunner, Repository } from 'typeorm';
+import { StorageType } from 'src/common/providers.type';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
-// import { randomUUID } from 'crypto';
-// import { join } from 'path';
-// import { ConfigService } from '@nestjs/config';
-// import { IStorageProviderFactory } from 'src/common/providers-factory/storage-provider.interface';
-// import { LocalStorageService } from 'src/common/providers-factory/local-storage-provider.factory';
+import { join } from 'path';
 
 @Injectable()
 export class UploadInfoService {
   constructor(
     @InjectRepository(UploadInfos)
     private readonly uploadInfoRepository: Repository<UploadInfos>,
-    // private readonly configService: ConfigService,
-    @Inject('STORAGE_PROVIDER_FACTORY') 
-    private storage: any,
+    @Inject('STORAGE_PROVIDER_FACTORY')
+    private storage: StorageType,
+
+    private readonly configService: ConfigService,
   ) {}
 
   async download(body: DownloadDataDto): Promise<Response> {
@@ -56,6 +56,7 @@ export class UploadInfoService {
     const data = [];
     for (const uploadInfo of uploadInfos) {
       const fileData = await this.readFile(uploadInfo.location);
+
       if (fileData) {
         const obj = {
           metadata: {
@@ -72,6 +73,7 @@ export class UploadInfoService {
         await queryRunner.manager.save(uploadInfo);
       }
     }
+
     return data;
   }
 
@@ -121,8 +123,6 @@ export class UploadInfoService {
       throw error;
     }
 
-    console.log(createdUser);
-
     return {
       message: 'data is saved now',
     };
@@ -145,6 +145,28 @@ export class UploadInfoService {
       });
       return uploadInfos.length > 0 ? uploadInfos : [];
     }
+  } 
+ 
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
+  async deleteDownloadedRowsAndFiles() {
+    const rows = await this.uploadInfoRepository.find({
+      where: { isDownloaded: true },
+    });
+
+    await Promise.all(
+      rows.map(async (row) => {
+        const path = row.location;
+        try {
+          await fs.promises.unlink(path);
+        } catch (error) {
+          console.error(error.message);
+        }
+
+        await this.uploadInfoRepository.delete(row.id);
+        console.log(`Row ${row.id} deleted`);
+      }),
+    );
+    console.log('Cron job completed');
   }
 
   isEmpty(obj: Record<string, any>): boolean {

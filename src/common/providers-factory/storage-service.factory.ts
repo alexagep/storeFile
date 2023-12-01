@@ -1,6 +1,5 @@
-// storage-service.factory.ts
 import { ConfigService } from '@nestjs/config';
-import { LocalStorageService } from 'src/common/providers-factory/local-storage-provider';
+import { LocalStorageService } from './local-storage-provider';
 import { S3StorageService } from './s3-storage-provider';
 import { MinioService } from 'nestjs-minio-client';
 
